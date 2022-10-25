@@ -43,3 +43,12 @@ for __,v in pairs(game.workspace:GetDescendants()) do -- the path
         end
        end
        
+       for __,v in pairs(game.workspace:GetDescendants()) do -- the path
+        if v.Name == "GoldenFreddy" then -- the item
+          local esp = Instance.new("Highlight",v) -- pretty much explains everything
+        esp.Name = v.Name
+        esp.FillTransparency = 0
+        esp.OutlineTransparency = 0
+        end
+       end
+       
