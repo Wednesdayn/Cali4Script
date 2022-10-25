@@ -1,0 +1,515 @@
+local Atlas = loadstring(game:HttpGet("https://rd2glory.com/Atlas.lua"))()
+
+local Main =
+    Atlas.new(
+    {
+        Name = "Timeline Hub",
+        ConfigFolder = "TimelineScript",
+        Credit = "Made by Cali!",
+        Color = Color3.fromRGB(0, 100, 0),
+        FullName = "Timeline Hub",
+        UseLoader = true,
+        Bind = "LeftControl",
+        CheckKey = function(e)
+            return e == "Timeline11111"
+        end,
+        Discord = "https://discord.gg/3ngTGAqUwV"
+    }
+)
+
+local Page1 = Main:CreatePage("Main (Lobby)")
+
+local Page2 = Main:CreatePage("Main (Game)")
+
+local Page4 = Main:CreatePage("Settings")
+
+local s1 = Page1:CreateSection("Main (Lobby Only)")
+
+local s5 = Page2:CreateSection("Main (Game Only)")
+
+local s6 = Page2:CreateSection("LocalPlayer (Game Only)")
+
+local s2 = Page2:CreateSection("Teleports (Game Only)")
+
+s1:CreateButton(
+    {
+        Name = "Create Game",
+        Callback = function()
+            local loaded = game.Players.LocalPlayer.Name
+
+            local args = {
+                [1] = "Create Game",
+                [2] = {
+                    ["NIGHT"] = 6,
+                    ["OWNER"] = loaded,
+                    ["PLAYERCOUNT"] = 99999,
+                    ["ANIMATRONIC_LEVELS"] = {
+                        ["Freddy"] = 100000,
+                        ["GoldenFreddy"] = 100000,
+                        ["Foxy"] = 100000,
+                        ["Chica"] = 100000,
+                        ["Marionette"] = 0,
+                        ["Bonnie"] = 100000
+                    },
+                    ["DIFFICULTY"] = "CUSTOM NIGHT",
+                    ["PRIVACY"] = "PUBLIC"
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Remotes.ClientInvoke:InvokeServer(unpack(args))
+            Main:Notify(
+                {
+                    Title = "Custom Night",
+                    Content = "If you survive the end you should make 1 million"
+                }
+            )
+            print("Button pressed!")
+        end
+    }
+)
+
+local TESTMALLY = game.Players.LocalPlayer.Name
+
+local DROPDOWNTEST =
+    s1:CreateDropdown(
+    {
+        Name = "Create Game On Player",
+        Callback = function(item)
+            Main:Notify(
+                {
+                    Title = "Game Created",
+                    Content = "Game Started For " .. item
+                }
+            )
+
+            local args = {
+                [1] = "Create Game",
+                [2] = {
+                    ["NIGHT"] = 6,
+                    ["OWNER"] = item,
+                    ["PLAYERCOUNT"] = 99999,
+                    ["ANIMATRONIC_LEVELS"] = {
+                        ["Freddy"] = 100000,
+                        ["GoldenFreddy"] = 100000,
+                        ["Foxy"] = 100000,
+                        ["Chica"] = 100000,
+                        ["Marionette"] = 0,
+                        ["Bonnie"] = 100000
+                    },
+                    ["DIFFICULTY"] = "CUSTOM NIGHT",
+                    ["PRIVACY"] = "PUBLIC"
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Remotes.ClientInvoke:InvokeServer(unpack(args))
+        end,
+        Options = {"F", "F", "F"},
+        ItemSelecting = true,
+        DefaultItemSelected = TESTMALLY,
+        Warning = "This has a warning",
+        WarningIcon = 12345
+    }
+)
+
+game:GetService("RunService").RenderStepped:Connect(
+    function()
+        local tbl = {}
+        for _, v in ipairs(game:GetService("Players"):GetPlayers()) do
+            table.insert(tbl, v.Name)
+        end
+        DROPDOWNTEST:Update(tbl)
+    end
+)
+
+local DROPDOWNTEST1 =
+    s1:CreateDropdown(
+    {
+        Name = "Start Game On Player",
+        Callback = function(item)
+            Main:Notify(
+                {
+                    Title = "Game Started",
+                    Content = "Game Started For " .. item
+                }
+            )
+
+            local args = {
+                [1] = "Teleport Game",
+                [2] = item
+            }
+
+            game:GetService("ReplicatedStorage").Remotes.Client:FireServer(unpack(args))
+        end,
+        Options = {"F", "F", "F"},
+        ItemSelecting = true,
+        DefaultItemSelected = TESTMALLY,
+        Warning = "This has a warning",
+        WarningIcon = 12345
+    }
+)
+
+game:GetService("RunService").RenderStepped:Connect(
+    function()
+        local tbl = {}
+        for _, v in ipairs(game:GetService("Players"):GetPlayers()) do
+            table.insert(tbl, v.Name)
+        end
+        DROPDOWNTEST1:Update(tbl)
+    end
+)
+
+s5:CreateButton(
+    {
+        Name = "Player Esp",
+        Callback = function()
+            local players = game.Players:GetPlayers()
+
+            for i, v in pairs(players) do
+                local esp = Instance.new("Highlight")
+                esp.Name = v.Name
+                esp.FillTransparency = 1
+                esp.FillColor = Color3.new(1, 0.666667, 0)
+                esp.OutlineColor = Color3.new(1, 0.333333, 1)
+                esp.OutlineTransparency = 0
+                esp.Parent = v.Character
+            end
+            Main:Notify(
+                {
+                    Title = "Player Esp Loaded",
+                    Content = "executed esp"
+                }
+            )
+            print("Button pressed!")
+        end
+    }
+)
+
+s5:CreateButton(
+    {
+        Name = "Animatronic Esp",
+        Callback = function()
+            Main:Notify(
+                {
+                    Title = "Animatronic Esp Loaded",
+                    Content = "executed esp"
+                }
+            )
+        end
+    }
+)
+
+s5:CreateButton(
+    {
+        Name = "Batteries Esp",
+        Callback = function()
+            Main:Notify(
+                {
+                    Title = "Batteries Esp Loaded",
+                    Content = "executed esp"
+                }
+            )
+        end
+    }
+)
+
+s6:CreateButton(
+    {
+        Name = "FullBright",
+        Callback = function()
+            if not _G.FullBrightExecuted then
+                _G.FullBrightEnabled = false
+
+                _G.NormalLightingSettings = {
+                    Brightness = game:GetService("Lighting").Brightness,
+                    ClockTime = game:GetService("Lighting").ClockTime,
+                    FogEnd = game:GetService("Lighting").FogEnd,
+                    GlobalShadows = game:GetService("Lighting").GlobalShadows,
+                    Ambient = game:GetService("Lighting").Ambient
+                }
+
+                game:GetService("Lighting"):GetPropertyChangedSignal("Brightness"):Connect(
+                    function()
+                        if
+                            game:GetService("Lighting").Brightness ~= 1 and
+                                game:GetService("Lighting").Brightness ~= _G.NormalLightingSettings.Brightness
+                         then
+                            _G.NormalLightingSettings.Brightness = game:GetService("Lighting").Brightness
+                            if not _G.FullBrightEnabled then
+                                repeat
+                                    wait()
+                                until _G.FullBrightEnabled
+                            end
+                            game:GetService("Lighting").Brightness = 1
+                        end
+                    end
+                )
+
+                game:GetService("Lighting"):GetPropertyChangedSignal("ClockTime"):Connect(
+                    function()
+                        if
+                            game:GetService("Lighting").ClockTime ~= 12 and
+                                game:GetService("Lighting").ClockTime ~= _G.NormalLightingSettings.ClockTime
+                         then
+                            _G.NormalLightingSettings.ClockTime = game:GetService("Lighting").ClockTime
+                            if not _G.FullBrightEnabled then
+                                repeat
+                                    wait()
+                                until _G.FullBrightEnabled
+                            end
+                            game:GetService("Lighting").ClockTime = 12
+                        end
+                    end
+                )
+
+                game:GetService("Lighting"):GetPropertyChangedSignal("FogEnd"):Connect(
+                    function()
+                        if
+                            game:GetService("Lighting").FogEnd ~= 786543 and
+                                game:GetService("Lighting").FogEnd ~= _G.NormalLightingSettings.FogEnd
+                         then
+                            _G.NormalLightingSettings.FogEnd = game:GetService("Lighting").FogEnd
+                            if not _G.FullBrightEnabled then
+                                repeat
+                                    wait()
+                                until _G.FullBrightEnabled
+                            end
+                            game:GetService("Lighting").FogEnd = 786543
+                        end
+                    end
+                )
+
+                game:GetService("Lighting"):GetPropertyChangedSignal("GlobalShadows"):Connect(
+                    function()
+                        if
+                            game:GetService("Lighting").GlobalShadows ~= false and
+                                game:GetService("Lighting").GlobalShadows ~= _G.NormalLightingSettings.GlobalShadows
+                         then
+                            _G.NormalLightingSettings.GlobalShadows = game:GetService("Lighting").GlobalShadows
+                            if not _G.FullBrightEnabled then
+                                repeat
+                                    wait()
+                                until _G.FullBrightEnabled
+                            end
+                            game:GetService("Lighting").GlobalShadows = false
+                        end
+                    end
+                )
+
+                game:GetService("Lighting"):GetPropertyChangedSignal("Ambient"):Connect(
+                    function()
+                        if
+                            game:GetService("Lighting").Ambient ~= Color3.fromRGB(178, 178, 178) and
+                                game:GetService("Lighting").Ambient ~= _G.NormalLightingSettings.Ambient
+                         then
+                            _G.NormalLightingSettings.Ambient = game:GetService("Lighting").Ambient
+                            if not _G.FullBrightEnabled then
+                                repeat
+                                    wait()
+                                until _G.FullBrightEnabled
+                            end
+                            game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+                        end
+                    end
+                )
+
+                game:GetService("Lighting").Brightness = 1
+                game:GetService("Lighting").ClockTime = 12
+                game:GetService("Lighting").FogEnd = 786543
+                game:GetService("Lighting").GlobalShadows = false
+                game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+
+                local LatestValue = true
+                spawn(
+                    function()
+                        repeat
+                            wait()
+                        until _G.FullBrightEnabled
+                        while wait() do
+                            if _G.FullBrightEnabled ~= LatestValue then
+                                if not _G.FullBrightEnabled then
+                                    game:GetService("Lighting").Brightness = _G.NormalLightingSettings.Brightness
+                                    game:GetService("Lighting").ClockTime = _G.NormalLightingSettings.ClockTime
+                                    game:GetService("Lighting").FogEnd = _G.NormalLightingSettings.FogEnd
+                                    game:GetService("Lighting").GlobalShadows = _G.NormalLightingSettings.GlobalShadows
+                                    game:GetService("Lighting").Ambient = _G.NormalLightingSettings.Ambient
+                                else
+                                    game:GetService("Lighting").Brightness = 1
+                                    game:GetService("Lighting").ClockTime = 12
+                                    game:GetService("Lighting").FogEnd = 786543
+                                    game:GetService("Lighting").GlobalShadows = false
+                                    game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
+                                end
+                                LatestValue = not LatestValue
+                            end
+                        end
+                    end
+                )
+            end
+
+            _G.FullBrightExecuted = true
+            _G.FullBrightEnabled = not _G.FullBrightEnabled
+
+            Main:Notify(
+                {
+                    Title = "FullBright Loaded",
+                    Content = "executed FullBright"
+                }
+            )
+        end
+    }
+)
+
+s6:CreateButton(
+    {
+        Name = "Bypassed Fly",
+        Callback = function()
+            local m = game:GetService("Players").LocalPlayer:GetMouse()
+
+            local ts = game:GetService("TweenService")
+            m.Button1Up:Connect(
+                function()
+                    if m.Target then
+                        local target = m.Target
+                        local time =
+                            TweenInfo.new(
+                            ((target.Position - game.Players.LocalPlayer.Character.Head.Position).magnitude / 80)
+                        )
+                        local data = {CFrame = CFrame.new(m.Hit.p.X, m.Hit.p.Y + 10, m.Hit.p.Z)}
+                        local tween = ts:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, time, data)
+                        tween:Play()
+                    end
+                end
+            )
+
+            Main:Notify(
+                {
+                    Title = "Bypassed Fly Loaded",
+                    Content = "executed Fly"
+                }
+            )
+        end
+    }
+)
+
+s6:CreateButton(
+    {
+        Name = "Marionette Block",
+        Callback = function()
+            
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CCali4/Cali4Script/main/Block"))()
+
+            Main:Notify(
+                {
+                    Title = "Marionette Block Loaded",
+                    Content = "executed Marionette Block"
+                }
+            )
+        end
+    }
+)
+
+s6:CreateTextBox(
+    {
+        Name = "Fov:",
+        Flag = "FOVAMOUNT",
+        Callback = function(inputtedText, enterPressed)
+            print("TextBox:", inputtedText, enterPressed)
+            game:GetService "Workspace".Camera.FieldOfView = inputtedText, enterPressed
+        end,
+        DefaultText = "0 - 350",
+        PlaceholderText = "No Text",
+        TabComplete = function(inputtedText)
+            if inputtedText == "Default" then
+                return "120"
+            end
+        end,
+        ClearTextOnFocus = true,
+        Warning = "This has a warning",
+        WarningIcon = 12345
+    }
+)
+
+s2:CreateKeybind(
+    {
+        Name = "Tp Ventilation Lever",
+        Flag = "Ventilation1",
+        Default = "G",
+        Callback = function(key)
+            print("Keybind changed to", key.Name)
+        end,
+        KeyPressed = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                CFrame.new(-285.4326477050781, 4.037407875061035, -317.9338073730469)
+        end,
+        Warning = "This has a warning",
+        WarningIcon = 12345
+    }
+)
+
+s2:CreateKeybind(
+    {
+        Name = "Tp West Generator",
+        Flag = "West Generator Teleport",
+        Default = "C",
+        Callback = function(key)
+            print("Keybind changed to", key.Name)
+        end,
+        KeyPressed = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                CFrame.new(-400.58380126953125, 3.999907970428467, -10.776310920715332)
+        end,
+        Warning = "This has a warning",
+        WarningIcon = 12345
+    }
+)
+
+s2:CreateKeybind(
+    {
+        Name = "Tp South Generator",
+        Flag = "South Generator Teleport",
+        Default = "B",
+        Callback = function(key)
+            print("Keybind changed to", key.Name)
+        end,
+        KeyPressed = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                CFrame.new(-382.6935729980469, 3.9999074935913086, -43.603153228759766)
+        end,
+        Warning = "This has a warning",
+        WarningIcon = 12345
+    }
+)
+
+s2:CreateKeybind(
+    {
+        Name = "Tp Office Room",
+        Flag = "Office Teleport",
+        Default = "X",
+        Callback = function(key)
+            print("Keybind changed to", key.Name)
+        end,
+        KeyPressed = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                CFrame.new(-101.3492660522461, 3.9859933853149414, -153.31214904785156)
+        end,
+        Warning = "This has a warning",
+        WarningIcon = 12345
+    }
+)
+
+s2:CreateKeybind(
+    {
+        Name = "Tp Safe Room",
+        Flag = "Safe Teleport",
+        Default = "H",
+        Callback = function(key)
+            print("Keybind changed to", key.Name)
+        end,
+        KeyPressed = function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                CFrame.new(-91.64042663574219, 3.9859931468963623, -123.11460876464844)
+        end,
+        Warning = "This has a warning",
+        WarningIcon = 12345
+    }
+)
