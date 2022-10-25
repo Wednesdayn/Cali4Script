@@ -1,0 +1,112 @@
+-- Decompiled with the Synapse X Luau decompiler.
+
+local l__TweenService__1 = game:GetService("TweenService");
+local l__ContentProvider__2 = game:GetService("ContentProvider");
+local l__ReplicatedStorage__3 = game:GetService("ReplicatedStorage");
+local l__LocalPlayer__4 = game.Players.LocalPlayer;
+local l__PlayerGui__5 = l__LocalPlayer__4.PlayerGui;
+if not l__LocalPlayer__4.Character then
+	local v6 = l__LocalPlayer__4.CharacterAdded:Wait();
+end;
+local l__Jumpscare_Box__7 = workspace:WaitForChild("WorkspaceUtilities"):WaitForChild("Jumpscare_Box");
+local l__Modules__8 = l__PlayerGui__5:WaitForChild("Modules");
+local l__Libraries__9 = l__Modules__8:WaitForChild("Libraries");
+local l__Utilities__10 = l__Modules__8:WaitForChild("Utilities");
+local l__Controllers__11 = l__Modules__8:WaitForChild("Controllers");
+local v12 = require(l__Libraries__9:WaitForChild("AnimationIDs"));
+local v13 = require(l__Utilities__10:WaitForChild("Animation"));
+local v14 = TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out);
+local v15 = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.InOut);
+local v16 = TweenInfo.new(0.15, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, 0, true);
+function StopRunningAnimations(p1)
+	local v17, v18, v19 = pairs(p1:GetPlayingAnimationTracks());
+	while true do
+		local v20, v21 = v17(v18, v19);
+		if v20 then
+
+		else
+			break;
+		end;
+		v19 = v20;
+		v21:Stop();	
+	end;
+end;
+local v22 = {};
+local u1 = require(l__Utilities__10:WaitForChild("Sound"));
+local u2 = require(l__Libraries__9:WaitForChild("SoundIDs"));
+local l__Transition__3 = l__PlayerGui__5:WaitForChild("GameUI"):WaitForChild("Transition");
+local u4 = require(l__Controllers__11:WaitForChild("CameraController"));
+local l__RootPart__5 = l__Jumpscare_Box__7:WaitForChild("RootPart");
+local u6 = {
+	Freddy = Color3.fromRGB(167, 228, 255), 
+	Bonnie = Color3.fromRGB(255, 139, 139), 
+	Foxy = Color3.fromRGB(255, 139, 139), 
+	Chica = Color3.fromRGB(255, 228, 157), 
+	Marionette = Color3.fromRGB(167, 228, 255)
+};
+local l__JumpscareAnimations__7 = l__ReplicatedStorage__3:WaitForChild("JumpscareAnimations");
+local u8 = require(l__Controllers__11:WaitForChild("UIController"));
+local l__CameraRigAnimations__9 = l__ReplicatedStorage__3:WaitForChild("CameraRigAnimations");
+local l__CurrentCamera__10 = game.Workspace.CurrentCamera;
+local l__RunService__11 = game:GetService("RunService");
+function v22.Jumpscare(p2, p3, p4)
+	u1.new(l__PlayerGui__5.Sounds, u2[p3.Name .. "Scream"]):Play();
+	l__Transition__3.BackgroundTransparency = 0;
+	u4:LockCamera();
+	wait(0.05);
+	p3 = p3:Clone();
+	p3.Parent = workspace;
+	p3:SetPrimaryPartCFrame(l__RootPart__5.CFrame);
+	p3.PrimaryPart.Anchored = true;
+	l__Jumpscare_Box__7.LightPart.SpotLight.Color = u6[p3.Name] or Color3.fromRGB(255, 255, 255);
+	local l__Humanoid__23 = p3:FindFirstChild("Humanoid");
+	local v24 = l__Jumpscare_Box__7:FindFirstChild(p3.Name .. "CameraRig");
+	local v25 = nil;
+	if p3.Name == "Marionette" then
+		local v26 = p3:FindFirstChild("AnimationController"):LoadAnimation((l__JumpscareAnimations__7:FindFirstChild(string.upper(p3.Name) .. "_JUMPSCARE")));
+		v24 = l__Jumpscare_Box__7:FindFirstChild("MarionetteRig");
+		p3:SetPrimaryPartCFrame(v24.RootPart.CFrame);
+		u8:Transition(0.35);
+	else
+		v26 = l__Humanoid__23:LoadAnimation((l__JumpscareAnimations__7:FindFirstChild(string.upper(p3.Name) .. "_JUMPSCARE")));
+		v25 = v24.AnimationController:LoadAnimation((l__CameraRigAnimations__9:FindFirstChild(string.upper(p3.Name) .. "_CAMERARIG")));
+		u8:Transition(0.15);
+	end;
+	if p3.Name == "Foxy" then
+		local u12 = u1.new(p3.PrimaryPart, u2.Slice);
+		v26:GetMarkerReachedSignal("Slice"):Connect(function()
+			u12:Play();
+		end);
+	end;
+	l__RunService__11:BindToRenderStep("JUMPSCARE", Enum.RenderPriority.Camera.Value, function()
+		l__CurrentCamera__10.CFrame = v24.CamPart.CFrame;
+		l__CurrentCamera__10.FieldOfView = 30;
+	end);
+	v26:Play();
+	if v25 then
+		v25:Play();
+	end;
+	if p3.Name == "Bonnie" then
+		task.spawn(function()
+			task.wait(1.75);
+			u8:DamageEffect();
+		end);
+	end;
+	while true do
+		wait();
+		if v26.IsPlaying == false then
+			break;
+		end;	
+	end;
+	l__Transition__3.BackgroundTransparency = 0;
+	u8:Transition(1.5);
+	u1.new(l__PlayerGui__5.Sounds, u2.DeathRing):FadeIn();
+	u8:EnableDeath(p4, p3.Name);
+	task.spawn(function()
+		wait(0.5);
+		p3:Destroy();
+		l__RunService__11:UnbindFromRenderStep("JUMPSCARE");
+		u4:Classic();
+	end);
+end;
+return v22;
