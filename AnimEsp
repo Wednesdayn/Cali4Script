@@ -1,8 +1,8 @@
 for __,v in pairs(game.workspace:GetDescendants()) do -- the path
  if v.Name == "Freddy" then -- the item
    local esp = Instance.new("Highlight",v) -- pretty much explains everything
- esp.Name = v.Name
- esp.FillTransparency = 0
+ esp.Name = v.Name..("Highlight")
+ esp.FillTransparency = 0.6
  esp.OutlineTransparency = 0
  end
 end
@@ -10,8 +10,8 @@ end
 for __,v in pairs(game.workspace:GetDescendants()) do -- the path
     if v.Name == "Freddy" then -- the item
       local esp = Instance.new("Highlight",v) -- pretty much explains everything
-    esp.Name = v.Name
-    esp.FillTransparency = 0
+    esp.Name = v.Name..("Highlight")
+    esp.FillTransparency = 0.6
     esp.OutlineTransparency = 0
     end
    end
@@ -19,8 +19,8 @@ for __,v in pairs(game.workspace:GetDescendants()) do -- the path
    for __,v in pairs(game.workspace:GetDescendants()) do -- the path
     if v.Name == "Foxy" then -- the item
       local esp = Instance.new("Highlight",v) -- pretty much explains everything
-    esp.Name = v.Name
-    esp.FillTransparency = 0
+    esp.Name = v.Name..("Highlight")
+    esp.FillTransparency = 0.6
     esp.OutlineTransparency = 0
     end
    end
@@ -28,8 +28,8 @@ for __,v in pairs(game.workspace:GetDescendants()) do -- the path
    for __,v in pairs(game.workspace:GetDescendants()) do -- the path
        if v.Name == "Chica" then -- the item
          local esp = Instance.new("Highlight",v) -- pretty much explains everything
-       esp.Name = v.Name
-       esp.FillTransparency = 0
+       esp.Name = v.Name..("Highlight")
+       esp.FillTransparency = 0.6
        esp.OutlineTransparency = 0
        end
       end
@@ -37,8 +37,8 @@ for __,v in pairs(game.workspace:GetDescendants()) do -- the path
       for __,v in pairs(game.workspace:GetDescendants()) do -- the path
         if v.Name == "Bonnie" then -- the item
           local esp = Instance.new("Highlight",v) -- pretty much explains everything
-        esp.Name = v.Name
-        esp.FillTransparency = 0
+        esp.Name = v.Name..("Highlight")
+        esp.FillTransparency = 0.6
         esp.OutlineTransparency = 0
         end
        end
@@ -46,8 +46,8 @@ for __,v in pairs(game.workspace:GetDescendants()) do -- the path
        for __,v in pairs(game.workspace:GetDescendants()) do -- the path
         if v.Name == "GoldenFreddy" then -- the item
           local esp = Instance.new("Highlight",v) -- pretty much explains everything
-        esp.Name = v.Name
-        esp.FillTransparency = 0
+        esp.Name = v.Name..("Highlight")
+        esp.FillTransparency = 0.6
         esp.OutlineTransparency = 0
         end
        end
