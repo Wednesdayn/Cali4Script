@@ -11,3 +11,5 @@ for i,v in pairs(MarionetteModule) do
         end)
     end
 end
+
+print("funny")
